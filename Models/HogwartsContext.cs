@@ -18,6 +18,10 @@ namespace HogwartsPotions.Models
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
+
         public async void AddRoom(Room room)
         {
             throw new NotImplementedException();
@@ -30,7 +34,7 @@ namespace HogwartsPotions.Models
 
         public Task<List<Room>> GetAllRooms()
         {
-            throw new NotImplementedException();
+            return Rooms.ToListAsync();
         }
 
         public async void UpdateRoom(Room room)
