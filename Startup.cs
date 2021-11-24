@@ -25,8 +25,15 @@ namespace HogwartsPotions
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(option =>
-                    option.SerializerSettings.ReferenceLoopHandling = 
-                    Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    option.SerializerSettings
+                    .ReferenceLoopHandling = Newtonsoft
+                    .Json.ReferenceLoopHandling.Ignore
+                )
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.Converters
+                    .Add(new Newtonsoft.Json.
+                        Converters.StringEnumConverter()
+                    )
                 );
         }
 
