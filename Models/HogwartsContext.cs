@@ -45,7 +45,7 @@ namespace HogwartsPotions.Models
 
         public Task<List<Room>> GetAllRooms()
         {
-            return Rooms.ToListAsync();
+            return Rooms.Include(room => room.Residents).ToListAsync();
         }
 
         public async void UpdateRoom(Room room)
