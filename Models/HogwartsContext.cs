@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HogwartsPotions.Models.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -35,12 +36,16 @@ namespace HogwartsPotions.Models
 
         public async void AddRoom(Room room)
         {
-            throw new NotImplementedException();
+            await Rooms.AddAsync(room);
+            this.SaveChanges();
         }
 
         public Task<Room> GetRoom(long roomId)
         {
-            throw new NotImplementedException();
+            return Rooms
+                .Where(room => room.ID == roomId)
+                .Include(room => room.Residents)
+                .FirstAsync();
         }
 
         public Task<List<Room>> GetAllRooms()
