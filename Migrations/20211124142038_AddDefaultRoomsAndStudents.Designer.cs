@@ -4,14 +4,16 @@ using HogwartsPotions.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HogwartsPotions.Migrations
 {
     [DbContext(typeof(HogwartsContext))]
-    partial class HogwartsContextModelSnapshot : ModelSnapshot
+    [Migration("20211124142038_AddDefaultRoomsAndStudents")]
+    partial class AddDefaultRoomsAndStudents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,16 +79,14 @@ namespace HogwartsPotions.Migrations
                             ID = 1L,
                             HouseType = (byte)0,
                             Name = "Hermione Granger",
-                            PetType = (byte)1,
-                            RoomID = 1L
+                            PetType = (byte)1
                         },
                         new
                         {
                             ID = 2L,
                             HouseType = (byte)3,
                             Name = "Draco Malfoy",
-                            PetType = (byte)3,
-                            RoomID = 2L
+                            PetType = (byte)3
                         });
                 });
 

@@ -20,6 +20,17 @@ namespace HogwartsPotions.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            Student firstStudent = new Student { ID = 1, Name = "Hermione Granger", HouseType = Enums.HouseType.Gryffindor, PetType = Enums.PetType.Cat };
+            Student secondStudent = new Student { ID = 2, Name = "Draco Malfoy", HouseType = Enums.HouseType.Slytherin, PetType = Enums.PetType.Owl };
+
+            Room firstRoom = new Room { ID = 1, Capacity = 2 };
+            Room secondRoom = new Room { ID = 2, Capacity = 2 };
+
+            firstStudent.RoomID = firstRoom.ID;
+            secondStudent.RoomID = secondRoom.ID;
+
+            modelBuilder.Entity<Student>().HasData(firstStudent, secondStudent);
+            modelBuilder.Entity<Room>().HasData(firstRoom, secondRoom);
         }
 
         public async void AddRoom(Room room)
