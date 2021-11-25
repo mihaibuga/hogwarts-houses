@@ -52,9 +52,12 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPut("/{id}")]
-        public void UpdateRoomById(long id, [FromBody] Room updatedRoom)
+        public async Task UpdateRoomByIdAsync(long id, [FromBody] Room updatedRoom)
         {
-            _context.Update(updatedRoom);
+            if (id == updatedRoom.ID)
+            {
+                await _context.UpdateRoom(updatedRoom);
+            }
         }
 
         [HttpDelete("/{id}")]

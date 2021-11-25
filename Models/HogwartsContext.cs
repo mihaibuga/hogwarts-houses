@@ -54,9 +54,16 @@ namespace HogwartsPotions.Models
             return Rooms.Include(room => room.Residents).ToListAsync();
         }
 
-        public async void UpdateRoom(Room room)
+        public async Task UpdateRoom(Room room)
         {
-            throw new NotImplementedException();
+            var roomInDB = await Rooms.FindAsync(room.ID);
+
+            if (roomInDB != null)
+            {
+                roomInDB.Capacity = room.Capacity;
+
+                await SaveChangesAsync();
+            }
         }
 
         public async void DeleteRoom(long id)
