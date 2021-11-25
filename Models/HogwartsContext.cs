@@ -60,7 +60,10 @@ namespace HogwartsPotions.Models
 
         public async void DeleteRoom(long id)
         {
-            throw new NotImplementedException();
+            Room roomToDelete = new Room { ID = id };
+            Rooms.Attach(roomToDelete);
+            Rooms.Remove(roomToDelete);
+            SaveChanges();
         }
 
         public Task<List<Room>> GetRoomsForRatOwners()

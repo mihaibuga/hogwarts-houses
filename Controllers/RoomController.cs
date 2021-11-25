@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HogwartsPotions.Models;
 using HogwartsPotions.Models.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HogwartsPotions.Controllers
@@ -29,9 +31,24 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpGet("/{id}")]
-        public async Task<Room> GetRoomById(long id)
+        public async Task<ActionResult<Room>> GetRoomById(long id)
         {
-            return await _context.GetRoom(id);
+            try
+            {
+                var room = await _context.GetRoom(id);
+
+                if (room == null)
+                {
+                    return NotFound();
+                }
+
+                return room;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
         }
 
         [HttpPut("/{id}")]
