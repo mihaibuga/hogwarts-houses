@@ -79,17 +79,5 @@ namespace HogwartsPotions.Controllers
         {
             return await _context.GetAvailableRooms();
         }
-
-        [HttpGet("/potions")]
-        public async Task<List<Potion>> GetAllPotions()
-        {
-            return await _context.GetAllPotions();
-        }
-
-        [HttpPost("/potions")]
-        public void AddPotion([FromBody] Potion potion)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
