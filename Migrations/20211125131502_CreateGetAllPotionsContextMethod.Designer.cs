@@ -4,14 +4,16 @@ using HogwartsPotions.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HogwartsPotions.Migrations
 {
     [DbContext(typeof(HogwartsContext))]
-    partial class HogwartsContextModelSnapshot : ModelSnapshot
+    [Migration("20211125131502_CreateGetAllPotionsContextMethod")]
+    partial class CreateGetAllPotionsContextMethod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,20 +72,6 @@ namespace HogwartsPotions.Migrations
                     b.HasIndex("StudentID");
 
                     b.ToTable("Potions");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1L,
-                            BrewingStatus = (byte)0,
-                            Name = "Ageing Potion"
-                        },
-                        new
-                        {
-                            ID = 2L,
-                            BrewingStatus = (byte)0,
-                            Name = "Bruise removal paste"
-                        });
                 });
 
             modelBuilder.Entity("HogwartsPotions.Models.Entities.Recipe", b =>

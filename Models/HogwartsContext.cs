@@ -39,6 +39,11 @@ namespace HogwartsPotions.Models
 
             modelBuilder.Entity<Student>().HasData(firstStudent, secondStudent);
             modelBuilder.Entity<Room>().HasData(firstRoom, secondRoom);
+
+            Potion firstPotion = new Potion { ID = 1, Name = "Ageing Potion", BrewingStatus = BrewingStatus.Brew };
+            Potion secondPotion = new Potion { ID = 2, Name = "Bruise removal paste", BrewingStatus = BrewingStatus.Brew };
+
+            modelBuilder.Entity<Potion>().HasData(firstPotion, secondPotion);
         }
 
         public async void AddRoom(Room room)
@@ -97,6 +102,15 @@ namespace HogwartsPotions.Models
         {
             return Rooms
                 .Where(room => room.Residents.Count == 0)
+                .ToListAsync();
+        }
+
+        public Task<List<Potion>> GetAllPotions()
+        {
+            return Potions
+                .Include(potion => potion.Student)
+                .Include(potion => potion.Recipe)
+                .Include(potion => potion.Ingredients)
                 .ToListAsync();
         }
     }
