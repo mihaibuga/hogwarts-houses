@@ -23,6 +23,18 @@ namespace HogwartsPotions
             services.AddDbContext<HogwartsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                    });
+            });
+
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(option =>
                     option.SerializerSettings
@@ -54,6 +66,8 @@ namespace HogwartsPotions
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors("AllowAll");
 
             app.UseAuthorization();
 
