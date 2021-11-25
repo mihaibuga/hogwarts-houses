@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace HogwartsPotions.Models
@@ -68,7 +69,12 @@ namespace HogwartsPotions.Models
 
         public Task<List<Room>> GetRoomsForRatOwners()
         {
-            throw new NotImplementedException();
+            return Rooms
+               .Where(room => room.Residents == null
+                   || !room.Residents.Any(resident => 
+                    (resident.PetType != PetType.Cat 
+                    || resident.PetType != PetType.Owl)))
+               .ToListAsync();
         }
     }
 }
