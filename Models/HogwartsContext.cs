@@ -66,12 +66,15 @@ namespace HogwartsPotions.Models
             }
         }
 
-        public async void DeleteRoom(long id)
+        public async Task DeleteRoom(long id)
         {
-            Room roomToDelete = new Room { ID = id };
-            Rooms.Attach(roomToDelete);
-            Rooms.Remove(roomToDelete);
-            SaveChanges();
+            Room roomToDelete = await Rooms.FindAsync(id);
+
+            if (roomToDelete != null)
+            {
+                Rooms.Remove(roomToDelete);
+                await SaveChangesAsync();
+            }
         }
 
         public Task<List<Room>> GetRoomsForRatOwners()

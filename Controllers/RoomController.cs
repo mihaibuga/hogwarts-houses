@@ -61,9 +61,9 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpDelete("/{id}")]
-        public void DeleteRoomById(long id)
+        public async Task DeleteRoomById(long id)
         {
-            _context.DeleteRoom(id);
+            await _context.DeleteRoom(id);
         }
 
         [HttpGet("/rat-owners")]
