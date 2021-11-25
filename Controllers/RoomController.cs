@@ -85,5 +85,11 @@ namespace HogwartsPotions.Controllers
         {
             return await _context.GetAllPotions();
         }
+
+        [HttpPost("/potions")]
+        public void AddPotion([FromBody] Potion potion)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
