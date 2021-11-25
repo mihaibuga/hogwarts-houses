@@ -16,6 +16,8 @@ namespace HogwartsPotions.Models
 
         public DbSet<Room> Rooms { get; set; }
 
+        public DbSet<Ingredient> Ingredients { get; set; }
+
         public HogwartsContext(DbContextOptions<HogwartsContext> options) : base(options)
         {
         }
