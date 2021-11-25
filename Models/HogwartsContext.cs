@@ -86,5 +86,12 @@ namespace HogwartsPotions.Models
                     || resident.PetType != PetType.Owl)))
                .ToListAsync();
         }
+
+        public Task<List<Room>> GetAvailableRooms()
+        {
+            return Rooms
+                .Where(room => room.Residents.Count == 0)
+                .ToListAsync();
+        }
     }
 }
