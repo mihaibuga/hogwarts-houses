@@ -27,9 +27,9 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPost]
-        public void AddPotion([FromBody] Potion potion)
+        public async Task AddPotion([FromBody] Potion potion)
         {
-            throw new NotImplementedException();
+            await _context.AddPotion(potion);
         }
     }
 }

@@ -113,5 +113,50 @@ namespace HogwartsPotions.Models
                 .Include(potion => potion.Ingredients)
                 .ToListAsync();
         }
+
+        public async Task AddPotion(Potion potion)
+        {
+            Student studentInDB = Students
+                    .Where(student =>
+                        student.ID == potion.StudentID)
+                    .SingleOrDefault();
+
+            List<Recipe> recipes = await Recipes.ToListAsync();
+
+            var isRecipeWithSameIngredientsAlreadyExistent =
+                recipes
+                .Where(recipeInDB => recipeInDB.Ingredients
+                    .SetEquals(potion.Ingredients)).Count() != 0;
+
+            if (potion.Ingredients.Count() < MaxIngredientsForPotions)
+            {
+                potion.BrewingStatus = BrewingStatus.Brew;
+            }
+            else if (isRecipeWithSameIngredientsAlreadyExistent)
+            {
+                potion.BrewingStatus = BrewingStatus.Replica;
+            }
+            else
+            {
+                string studentName = studentInDB.Name;
+
+                Recipe dicoveredRecipe = new Recipe
+                {
+                    Name = studentName + "'s discovery",
+                    StudentID = potion.StudentID
+                };
+                    
+                dicoveredRecipe.Ingredients.UnionWith(potion.Ingredients);
+                await Recipes.AddAsync(dicoveredRecipe);
+                await SaveChangesAsync();
+
+                var dicoveredRecipeId = dicoveredRecipe.ID;
+
+                potion.RecipeID = dicoveredRecipeId;
+                potion.BrewingStatus = BrewingStatus.Discovery;
+            }
+            await Potions.AddAsync(potion);
+            await SaveChangesAsync();
+        }
     }
 }
