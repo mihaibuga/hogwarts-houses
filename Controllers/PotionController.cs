@@ -27,9 +27,9 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPost]
-        public async Task AddPotion([FromBody] Potion potion)
+        public async Task<Potion> AddPotion([FromBody] Potion potion)
         {
-            await _context.AddPotion(potion);
+            return await _context.AddPotion(potion);
         }
     }
 }

@@ -114,49 +114,50 @@ namespace HogwartsPotions.Models
                 .ToListAsync();
         }
 
-        public async Task AddPotion(Potion potion)
+        public Task<Student> GetStudent(long id)
         {
-            Student studentInDB = Students
+            return Students
                     .Where(student =>
-                        student.ID == potion.StudentID)
-                    .SingleOrDefault();
+                        student.ID == id)
+                    .SingleAsync();
+        }
 
-            List<Recipe> recipes = await Recipes.ToListAsync();
+        public Task<List<Recipe>> GetAllRecipes()
+        {
+            return Recipes
+                .Include(recipe => recipe.Ingredients)
+                .ToListAsync();
+        }
 
-            var isRecipeWithSameIngredientsAlreadyExistent =
-                recipes
-                .Where(recipeInDB => recipeInDB.Ingredients
-                    .SetEquals(potion.Ingredients)).Count() != 0;
+        public async void AddRecipe(Recipe recipe)
+        {
+            await Recipes.AddAsync(recipe);
+            await SaveChangesAsync();
+        }
 
-            if (potion.Ingredients.Count() < MaxIngredientsForPotions)
+        public async Task<Potion> AddPotion(Potion potion)
+        {
+            Student studentInDB = await GetStudent((long)potion.StudentID);
+
+            List<Recipe> recipes = await GetAllRecipes();
+
+            potion.CheckBrewingStatus(recipes, MaxIngredientsForPotions);
+
+            if (potion.BrewingStatus == BrewingStatus.Discovery)
             {
-                potion.BrewingStatus = BrewingStatus.Brew;
-            }
-            else if (isRecipeWithSameIngredientsAlreadyExistent)
-            {
-                potion.BrewingStatus = BrewingStatus.Replica;
-            }
-            else
-            {
-                string studentName = studentInDB.Name;
+                Recipe dicoveredRecipe = new Recipe(studentInDB.Name, potion);
 
-                Recipe dicoveredRecipe = new Recipe
-                {
-                    Name = studentName + "'s discovery",
-                    StudentID = potion.StudentID
-                };
-                    
-                dicoveredRecipe.Ingredients.UnionWith(potion.Ingredients);
-                await Recipes.AddAsync(dicoveredRecipe);
-                await SaveChangesAsync();
+                AddRecipe(dicoveredRecipe);
 
                 var dicoveredRecipeId = dicoveredRecipe.ID;
 
                 potion.RecipeID = dicoveredRecipeId;
-                potion.BrewingStatus = BrewingStatus.Discovery;
             }
+
             await Potions.AddAsync(potion);
             await SaveChangesAsync();
+
+            return potion;
         }
     }
 }
