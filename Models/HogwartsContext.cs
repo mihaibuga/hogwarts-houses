@@ -168,5 +168,13 @@ namespace HogwartsPotions.Models
 
             return potion;
         }
+
+        public async Task AddBrewingPotion(Potion potion)
+        {
+            potion.BrewingStatus = BrewingStatus.Brew;
+
+            await Potions.AddAsync(potion);
+            await SaveChangesAsync();
+        }
     }
 }
