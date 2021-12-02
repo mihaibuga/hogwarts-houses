@@ -46,130 +46,130 @@ namespace HogwartsPotions.Models
             modelBuilder.Entity<Potion>().HasData(firstPotion, secondPotion);
         }
 
-        public Task<List<Potion>> GetAllPotions()
-        {
-            return Potions
-                .Include(potion => potion.Student)
-                .Include(potion => potion.Recipe)
-                .Include(potion => potion.Ingredients)
-                .ToListAsync();
-        }
+        //public Task<List<Potion>> GetAllPotions()
+        //{
+        //    return Potions
+        //        .Include(potion => potion.Student)
+        //        .Include(potion => potion.Recipe)
+        //        .Include(potion => potion.Ingredients)
+        //        .ToListAsync();
+        //}
 
-        public Task<Potion> GetPotion(long potionId)
-        {
-            return Potions
-                .Where(potion => potion.ID == potionId)
-                .Include(potion => potion.Student)
-                .Include(potion => potion.Recipe)
-                .Include(potion => potion.Ingredients)
-                .FirstAsync();
-        }
+        //public Task<Potion> GetPotion(long potionId)
+        //{
+        //    return Potions
+        //        .Where(potion => potion.ID == potionId)
+        //        .Include(potion => potion.Student)
+        //        .Include(potion => potion.Recipe)
+        //        .Include(potion => potion.Ingredients)
+        //        .FirstAsync();
+        //}
 
-        public Task<List<Potion>> GetPotionsByStudent(long studentId)
-        {
-            return Potions
-                .Where(potion => potion.StudentID == studentId)
-                .Include(potion => potion.Student)
-                .Include(potion => potion.Recipe)
-                .Include(potion => potion.Ingredients)
-                .ToListAsync();
-        }
+        //public Task<List<Potion>> GetPotionsByStudent(long studentId)
+        //{
+        //    return Potions
+        //        .Where(potion => potion.StudentID == studentId)
+        //        .Include(potion => potion.Student)
+        //        .Include(potion => potion.Recipe)
+        //        .Include(potion => potion.Ingredients)
+        //        .ToListAsync();
+        //}
 
-        public Task<Student> GetStudent(long id)
-        {
-            return Students
-                    .Where(student => student.ID == id)
-                    .SingleAsync();
-        }
+        //public Task<Student> GetStudent(long id)
+        //{
+        //    return Students
+        //            .Where(student => student.ID == id)
+        //            .SingleAsync();
+        //}
 
-        public Task<List<Recipe>> GetAllRecipes()
-        {
-            return Recipes
-                .Include(recipe => recipe.Ingredients)
-                .ToListAsync();
-        }
+        //public Task<List<Recipe>> GetAllRecipes()
+        //{
+        //    return Recipes
+        //        .Include(recipe => recipe.Ingredients)
+        //        .ToListAsync();
+        //}
 
-        public async Task<List<Recipe>> GetPossibleRecipesForPotion(long potionId)
-        {
-            List<Recipe> recipesContainingPotionIngredients = new List<Recipe>();
-            Potion potion = await GetPotion(potionId);
+        //public async Task<List<Recipe>> GetPossibleRecipesForPotion(long potionId)
+        //{
+        //    List<Recipe> recipesContainingPotionIngredients = new List<Recipe>();
+        //    Potion potion = await GetPotion(potionId);
 
-            if (potion.Ingredients.Count < MaxIngredientsForPotions)
-            {
-                List<Recipe> recipes = await GetAllRecipes();
+        //    if (potion.Ingredients.Count < MaxIngredientsForPotions)
+        //    {
+        //        List<Recipe> recipes = await GetAllRecipes();
 
-                recipesContainingPotionIngredients =
-                    recipes
-                        .Where(recipe => recipe
-                            .HasAllIngredients(
-                                potion.Ingredients,
-                                potion.Ingredients.Count
-                            )
-                        )
-                        .ToList();
-            }
+        //        recipesContainingPotionIngredients =
+        //            recipes
+        //                .Where(recipe => recipe
+        //                    .HasAllIngredients(
+        //                        potion.Ingredients,
+        //                        potion.Ingredients.Count
+        //                    )
+        //                )
+        //                .ToList();
+        //    }
 
-            return recipesContainingPotionIngredients;
-        }
+        //    return recipesContainingPotionIngredients;
+        //}
 
-        public async void AddRecipe(Recipe recipe)
-        {
-            await Recipes.AddAsync(recipe);
-            await SaveChangesAsync();
-        }
+        //public async void AddRecipe(Recipe recipe)
+        //{
+        //    await Recipes.AddAsync(recipe);
+        //    await SaveChangesAsync();
+        //}
 
-        public async Task<Potion> AddPotion(Potion potion)
-        {
-            Student studentInDB = await GetStudent((long)potion.StudentID);
+        //public async Task<Potion> AddPotion(Potion potion)
+        //{
+        //    Student studentInDB = await GetStudent((long)potion.StudentID);
 
-            List<Recipe> recipes = await GetAllRecipes();
+        //    List<Recipe> recipes = await GetAllRecipes();
 
-            potion.CheckBrewingStatus(recipes, MaxIngredientsForPotions);
+        //    potion.CheckBrewingStatus(recipes, MaxIngredientsForPotions);
 
-            if (potion.BrewingStatus == BrewingStatus.Discovery)
-            {
-                Recipe dicoveredRecipe = new Recipe(studentInDB.Name, potion);
+        //    if (potion.BrewingStatus == BrewingStatus.Discovery)
+        //    {
+        //        Recipe dicoveredRecipe = new Recipe(studentInDB.Name, potion);
 
-                AddRecipe(dicoveredRecipe);
+        //        AddRecipe(dicoveredRecipe);
 
-                var dicoveredRecipeId = dicoveredRecipe.ID;
+        //        var dicoveredRecipeId = dicoveredRecipe.ID;
 
-                potion.RecipeID = dicoveredRecipeId;
-            }
+        //        potion.RecipeID = dicoveredRecipeId;
+        //    }
 
-            await Potions.AddAsync(potion);
-            await SaveChangesAsync();
+        //    await Potions.AddAsync(potion);
+        //    await SaveChangesAsync();
 
-            return potion;
-        }
+        //    return potion;
+        //}
 
-        public async Task AddBrewingPotion(Potion potion)
-        {
-            potion.BrewingStatus = BrewingStatus.Brew;
+        //public async Task AddBrewingPotion(Potion potion)
+        //{
+        //    potion.BrewingStatus = BrewingStatus.Brew;
 
-            await Potions.AddAsync(potion);
-            await SaveChangesAsync();
-        }
+        //    await Potions.AddAsync(potion);
+        //    await SaveChangesAsync();
+        //}
 
-        public async Task<Potion> AttachIngredientToPotion(long potionId, Ingredient ingredient)
-        {
-            Potion potion = await GetPotion(potionId);
+        //public async Task<Potion> AttachIngredientToPotion(long potionId, Ingredient ingredient)
+        //{
+        //    Potion potion = await GetPotion(potionId);
 
-            if (potion.Ingredients.Count < MaxIngredientsForPotions)
-            {
-                potion.Ingredients.Add(ingredient);
+        //    if (potion.Ingredients.Count < MaxIngredientsForPotions)
+        //    {
+        //        potion.Ingredients.Add(ingredient);
 
-                if (potion.Ingredients.Count == MaxIngredientsForPotions)
-                {
-                    List<Recipe> recipes = await GetAllRecipes();
+        //        if (potion.Ingredients.Count == MaxIngredientsForPotions)
+        //        {
+        //            List<Recipe> recipes = await GetAllRecipes();
 
-                    potion.CheckBrewingStatus(recipes, MaxIngredientsForPotions);
-                }
+        //            potion.CheckBrewingStatus(recipes, MaxIngredientsForPotions);
+        //        }
 
-                await SaveChangesAsync();
-            }
+        //        await SaveChangesAsync();
+        //    }
 
-            return potion;
-        }
+        //    return potion;
+        //}
     }
 }

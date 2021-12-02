@@ -60,8 +60,13 @@ namespace HogwartsPotions.Extensions
             this IServiceCollection services)
         {
             services.AddTransient<IRoomRepository, RoomRepository>();
+            services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient<IPotionRepository, PotionRepository>();
+            services.AddTransient<IRecipeRepository, RecipeRepository>();
+
+            services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<IPotionService, PotionService>();
+            services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IRoomService, RoomService>();
 
             return services;
