@@ -187,13 +187,15 @@ namespace HogwartsPotions.Models
             await SaveChangesAsync();
         }
 
-        public async Task AttachIngredientToPotion(long potionId, Ingredient ingredient)
+        public async Task<Potion> AttachIngredientToPotion(long potionId, Ingredient ingredient)
         {
             Potion potion = await GetPotion(potionId);
 
             potion.Ingredients.Add(ingredient);
 
             await SaveChangesAsync();
+
+            return potion;
         }
     }
 }
