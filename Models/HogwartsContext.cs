@@ -150,19 +150,23 @@ namespace HogwartsPotions.Models
 
         public async Task<List<Recipe>> GetPossibleRecipesForPotion(long potionId)
         {
+            List<Recipe> recipesContainingPotionIngredients = new List<Recipe>();
             Potion potion = await GetPotion(potionId);
 
-            List<Recipe> recipes = await GetAllRecipes();
+            if (potion.Ingredients.Count < MaxIngredientsForPotions)
+            {
+                List<Recipe> recipes = await GetAllRecipes();
 
-            List<Recipe> recipesContainingPotionIngredients =
-                recipes
-                    .Where(recipe => recipe
-                        .HasAllIngredients(
-                            potion.Ingredients, 
-                            potion.Ingredients.Count
+                recipesContainingPotionIngredients =
+                    recipes
+                        .Where(recipe => recipe
+                            .HasAllIngredients(
+                                potion.Ingredients,
+                                potion.Ingredients.Count
+                            )
                         )
-                    )
-                    .ToList();
+                        .ToList();
+            }
 
             return recipesContainingPotionIngredients;
         }
