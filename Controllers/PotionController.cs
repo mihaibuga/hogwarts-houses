@@ -43,5 +43,11 @@ namespace HogwartsPotions.Controllers
         {
             await _context.AddBrewingPotion(potion);
         }
+
+        [HttpPut("/potions/{potionId}/add")]
+        public async Task AttachIngredientToPotion(long potionId, [FromBody] Ingredient ingredient)
+        {
+            await _context.AttachIngredientToPotion(potionId, ingredient);
+        }
     }
 }

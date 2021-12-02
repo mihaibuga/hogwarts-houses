@@ -114,6 +114,16 @@ namespace HogwartsPotions.Models
                 .ToListAsync();
         }
 
+        public Task<Potion> GetPotion(long potionId)
+        {
+            return Potions
+                .Where(potion => potion.ID == potionId)
+                .Include(potion => potion.Student)
+                .Include(potion => potion.Recipe)
+                .Include(potion => potion.Ingredients)
+                .FirstAsync();
+        }
+
         public Task<List<Potion>> GetPotionsByStudent(long studentId)
         {
             return Potions
@@ -174,6 +184,15 @@ namespace HogwartsPotions.Models
             potion.BrewingStatus = BrewingStatus.Brew;
 
             await Potions.AddAsync(potion);
+            await SaveChangesAsync();
+        }
+
+        public async Task AttachIngredientToPotion(long potionId, Ingredient ingredient)
+        {
+            Potion potion = await GetPotion(potionId);
+
+            potion.Ingredients.Add(ingredient);
+
             await SaveChangesAsync();
         }
     }
