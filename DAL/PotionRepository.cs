@@ -55,9 +55,18 @@ namespace HogwartsPotions.DAL
             return potion;
         }
 
-        public Task Delete(long id)
+        public async Task Delete(long id)
         {
-            throw new NotImplementedException();
+            Potion potionToDelete = await _context.Potions
+                .Where(potion => potion.ID == id)
+                .Include(potion => potion.Ingredients)
+                .SingleOrDefaultAsync();
+
+            if (potionToDelete != null)
+            {
+                _context.Potions.Remove(potionToDelete);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public Task<Potion> Get(long potionId)

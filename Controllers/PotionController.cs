@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HogwartsPotions.DAL.Interfaces;
 using HogwartsPotions.Models;
@@ -28,7 +27,6 @@ namespace HogwartsPotions.Controllers
         [HttpGet]
         public async Task<List<Potion>> GetAllPotions()
         {
-            //return await _context.GetAllPotions();
             return await _potionService.GetAll();
         }
 
@@ -60,6 +58,12 @@ namespace HogwartsPotions.Controllers
         public async Task<Potion> AttachIngredientToPotion(long potionId, [FromBody] Ingredient ingredient)
         {
             return await _potionService.AttachIngredientToPotion(potionId, ingredient);
+        }
+
+        [HttpDelete("/potions/{potionId}")]
+        public async Task DeleteRoomById(long potionId)
+        {
+            await _potionService.Delete(potionId);
         }
     }
 }
