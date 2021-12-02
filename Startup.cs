@@ -1,4 +1,8 @@
+using HogwartsPotions.DAL;
+using HogwartsPotions.DAL.Interfaces;
+using HogwartsPotions.Extensions;
 using HogwartsPotions.Models;
+using HogwartsPotions.Models.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -20,33 +24,13 @@ namespace HogwartsPotions
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<HogwartsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.ConfigureDbContext(Configuration);
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll",
-                    builder =>
-                    {
-                        builder
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                    });
-            });
+            services.ConfigureCors();
 
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(option =>
-                    option.SerializerSettings
-                    .ReferenceLoopHandling = Newtonsoft
-                    .Json.ReferenceLoopHandling.Ignore
-                )
-                .AddNewtonsoftJson(options =>
-                    options.SerializerSettings.Converters
-                    .Add(new Newtonsoft.Json.
-                        Converters.StringEnumConverter()
-                    )
-                );
+            services.ConfigureControllers();
+
+            services.ConfigureInternalDependencies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
