@@ -14,34 +14,39 @@ namespace HogwartsPotions.DAL
             _roomRepository = roomRepository;
         }
 
-        public void Add()
+        public async Task Add(Room room)
         {
-            throw new System.NotImplementedException();
+            await _roomRepository.Add(room);
         }
 
-        public void Add(Room entity)
+        public async Task Delete(long id)
         {
-            throw new System.NotImplementedException();
+            await _roomRepository.Delete(id);
         }
 
-        public void Delete(long id)
+        public Task<Room> Get(long id)
         {
-            throw new System.NotImplementedException();
+            return _roomRepository.Get(id);
         }
 
-        public Room Get(long id)
+        public Task<List<Room>> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _roomRepository.GetAll();
         }
 
-        public async Task<List<Room>> GetAll()
+        public Task<List<Room>> GetAvailableRooms()
         {
-            return await _roomRepository.GetAll();
+            return _roomRepository.GetAvailableRooms();
         }
 
-        public void Update(long id)
+        public Task<List<Room>> GetRoomsForRatOwners()
         {
-            throw new System.NotImplementedException();
+            return _roomRepository.GetRoomsForRatOwners();
+        }
+
+        public async Task Update(Room room)
+        {
+            await _roomRepository.Update(room);
         }
     }
 }

@@ -46,65 +46,6 @@ namespace HogwartsPotions.Models
             modelBuilder.Entity<Potion>().HasData(firstPotion, secondPotion);
         }
 
-        public async void AddRoom(Room room)
-        {
-            await Rooms.AddAsync(room);
-            this.SaveChanges();
-        }
-
-        public Task<Room> GetRoom(long roomId)
-        {
-            return Rooms
-                .Where(room => room.ID == roomId)
-                .Include(room => room.Residents)
-                .FirstAsync();
-        }
-
-        public Task<List<Room>> GetAllRooms()
-        {
-            return Rooms.Include(room => room.Residents).ToListAsync();
-        }
-
-        public async Task UpdateRoom(Room room)
-        {
-            var roomInDB = await Rooms.FindAsync(room.ID);
-
-            if (roomInDB != null)
-            {
-                roomInDB.Capacity = room.Capacity;
-
-                await SaveChangesAsync();
-            }
-        }
-
-        public async Task DeleteRoom(long id)
-        {
-            Room roomToDelete = await Rooms.FindAsync(id);
-
-            if (roomToDelete != null)
-            {
-                Rooms.Remove(roomToDelete);
-                await SaveChangesAsync();
-            }
-        }
-
-        public Task<List<Room>> GetRoomsForRatOwners()
-        {
-            return Rooms
-               .Where(room => room.Residents == null
-                   || !room.Residents.Any(resident => 
-                    (resident.PetType != PetType.Cat 
-                    || resident.PetType != PetType.Owl)))
-               .ToListAsync();
-        }
-
-        public Task<List<Room>> GetAvailableRooms()
-        {
-            return Rooms
-                .Where(room => room.Residents.Count == 0)
-                .ToListAsync();
-        }
-
         public Task<List<Potion>> GetAllPotions()
         {
             return Potions

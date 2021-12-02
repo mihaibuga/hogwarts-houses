@@ -5,11 +5,10 @@ namespace HogwartsPotions.DAL.Interfaces
 {
     public interface IBaseService<T>
     {
+        Task Add(T item);
         Task<List<T>> GetAll();
-        void Add();
-        void Add(T entity);
-        T Get(long id);
-        void Delete(long id);
-        void Update(long id);
+        Task<T> Get(long id);
+        Task Update(T item);
+        Task Delete(long id);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using HogwartsPotions.DAL.Interfaces;
 using HogwartsPotions.Models;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,24 +18,29 @@ namespace HogwartsPotions.DAL
             _context = context;
         }
 
-        public void Add()
+        public async Task Add(Room room)
         {
-            throw new NotImplementedException();
+            await _context.Rooms.AddAsync(room);
+            _context.SaveChanges();
         }
 
-        public void Add(Room entity)
+        public async Task Delete(long id)
         {
-            throw new NotImplementedException();
+            Room roomToDelete = await _context.Rooms.FindAsync(id);
+
+            if (roomToDelete != null)
+            {
+                _context.Rooms.Remove(roomToDelete);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public void Delete(long id)
+        public Task<Room> Get(long roomId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Room Get(long id)
-        {
-            throw new NotImplementedException();
+            return _context.Rooms
+                .Where(room => room.ID == roomId)
+                .Include(room => room.Residents)
+                .FirstAsync();
         }
 
         public Task<List<Room>> GetAll()
@@ -45,9 +50,33 @@ namespace HogwartsPotions.DAL
                 .ToListAsync();
         }
 
-        public void Update(long id)
+        public Task<List<Room>> GetAvailableRooms()
         {
-            throw new NotImplementedException();
+            return _context.Rooms
+                .Where(room => room.Residents.Count == 0)
+                .ToListAsync();
+        }
+
+        public Task<List<Room>> GetRoomsForRatOwners()
+        {
+            return _context.Rooms
+               .Where(room => room.Residents == null
+                   || !room.Residents.Any(resident =>
+                    (resident.PetType != PetType.Cat
+                    || resident.PetType != PetType.Owl)))
+               .ToListAsync();
+        }
+
+        public async Task Update(Room room)
+        {
+            var roomInDB = await _context.Rooms.FindAsync(room.ID);
+
+            if (roomInDB != null)
+            {
+                roomInDB.Capacity = room.Capacity;
+
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

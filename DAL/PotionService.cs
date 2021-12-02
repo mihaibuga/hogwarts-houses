@@ -14,22 +14,17 @@ namespace HogwartsPotions.DAL
             _roomRepository = roomRepository;
         }
 
-        public void Add()
+        public Task Add(Potion item)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Add(Potion entity)
+        public Task Delete(long id)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Delete(long id)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Potion Get(long id)
+        public Task<Potion> Get(long id)
         {
             throw new System.NotImplementedException();
         }
@@ -39,7 +34,7 @@ namespace HogwartsPotions.DAL
             throw new System.NotImplementedException();
         }
 
-        public void Update(long id)
+        public Task Update(Potion item)
         {
             throw new System.NotImplementedException();
         }

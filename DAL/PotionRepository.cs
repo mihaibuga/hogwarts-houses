@@ -17,22 +17,17 @@ namespace HogwartsPotions.DAL
             _context = context;
         }
 
-        public void Add()
+        public Task Add(Potion item)
         {
             throw new NotImplementedException();
         }
 
-        public void Add(Potion entity)
+        public Task Delete(long id)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(long id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Potion Get(long id)
+        public Task<Potion> Get(long id)
         {
             throw new NotImplementedException();
         }
@@ -42,7 +37,7 @@ namespace HogwartsPotions.DAL
             throw new NotImplementedException();
         }
 
-        public void Update(long id)
+        public Task Update(Potion item)
         {
             throw new NotImplementedException();
         }
