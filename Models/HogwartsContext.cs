@@ -114,11 +114,20 @@ namespace HogwartsPotions.Models
                 .ToListAsync();
         }
 
+        public Task<List<Potion>> GetPotionsByStudent(long studentId)
+        {
+            return Potions
+                .Where(potion => potion.StudentID == studentId)
+                .Include(potion => potion.Student)
+                .Include(potion => potion.Recipe)
+                .Include(potion => potion.Ingredients)
+                .ToListAsync();
+        }
+
         public Task<Student> GetStudent(long id)
         {
             return Students
-                    .Where(student =>
-                        student.ID == id)
+                    .Where(student => student.ID == id)
                     .SingleAsync();
         }
 
