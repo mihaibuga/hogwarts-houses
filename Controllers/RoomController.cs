@@ -33,7 +33,6 @@ namespace HogwartsPotions.Controllers
         [HttpPost]
         public void AddRoom([FromBody] Room room)
         {
-            //_context.AddRoom(room);
             _roomService.Add(room);
         }
 
@@ -42,7 +41,6 @@ namespace HogwartsPotions.Controllers
         {
             try
             {
-                //var room = await _context.GetRoom(id);
                 var room = await _roomService.Get(id);
 
                 if (room == null)
@@ -64,7 +62,6 @@ namespace HogwartsPotions.Controllers
         {
             if (id == updatedRoom.ID)
             {
-                //await _context.UpdateRoom(updatedRoom);
                 await _roomService.Update(updatedRoom);
             }
         }
@@ -72,21 +69,18 @@ namespace HogwartsPotions.Controllers
         [HttpDelete("/{id}")]
         public async Task DeleteRoomById(long id)
         {
-            //await _context.DeleteRoom(id);
             await _roomService.Delete(id);
         }
 
         [HttpGet("/rat-owners")]
         public async Task<List<Room>> GetRoomsForRatOwners()
         {
-            //return await _context.GetRoomsForRatOwners();
             return await _roomService.GetRoomsForRatOwners();
         }
 
         [HttpGet("/available")]
         public async Task<List<Room>> GetAvailableRooms()
         {
-            //return await _context.GetAvailableRooms();
             return await _roomService.GetAvailableRooms();
         }
     }
