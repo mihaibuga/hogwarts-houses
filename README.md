@@ -113,6 +113,6 @@ The React client will display the app to the localhost:3000 address, and any oth
 [postman]: https://www.postman.com/
 
 
-[home-page]: captures/home-page.png
-[new-room-page]: captures/new-room-page.png
-[room-details]: captures/room-details.png
+[home-page]: wwwroot/img/captures/home-page.png
+[new-room-page]: wwwroot/img/captures/new-room-page.png
+[room-details]: wwwroot/img/captures/room-details.png
