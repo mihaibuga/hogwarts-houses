@@ -69,11 +69,11 @@ IDE:
 
 ### Visuals
 
-Empty Cart:
+New room page:
 
 ![new-room-page.png][new-room-page]
 
-Register Page:
+Room details page:
 
 ![room-details.png][room-details]
 
